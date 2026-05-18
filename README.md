@@ -1,3 +1,24 @@
+# agent-plan
+
+这是一个配合“大模型应用后端教材”逐章完成 Go 作业的工程骨架。
+
+## Go 工程用法
+
+```bash
+make test
+make list
+make run-chapter CH=05
+```
+
+目录约定：
+
+- `cmd/chapter`：章节索引 CLI。
+- `internal/shared`：章节和作业的公共类型。
+- `internal/chapter01` 到 `internal/chapter14`：每章独立作业目录。
+- `大模型应用后端教材/`：原始教材文档。
+
+实现某章作业时，优先在对应目录里补代码和测试。例如第 5 章就在 `internal/chapter05` 下实现，跑 `go test ./internal/chapter05` 做局部验证，最后再跑 `make test`。
+
 # AI 应用后端教材阅读建议
 
 这套资料面向传统 Go/Java 后端工程师转向 AI 应用后端、RAG 工程、Agent 平台后端或大模型产品工程岗位。
@@ -186,4 +207,3 @@ Go AI Knowledge Assistant
 - 模型调用日志。
 
 这个项目做出来后，再用第 14 章整理简历和面试话术。
-
