@@ -2,11 +2,11 @@ package chapter02
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
+
+	"agent-plan/internal/shared"
 )
 
 const (
@@ -36,50 +36,18 @@ func newTimeSSEHandler(timeout, interval time.Duration, now func() time.Time) ht
 			return
 		}
 
-		flusher, ok := w.(http.Flusher)
-		if !ok {
-			http.Error(w, "streaming unsupported", http.StatusInternalServerError)
-			return
-		}
-
 		ctx, cancel := context.WithTimeout(r.Context(), timeout)
 		defer cancel()
 
-		w.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
-		w.Header().Set("Cache-Control", "no-cache")
-		w.Header().Set("Connection", "keep-alive")
-		w.Header().Set("X-Accel-Buffering", "no")
-
-		events := make(chan timeSSEEvent)
-		done := make(chan struct{})
-		go streamTimeEvents(ctx, events, done, clientID, interval, now)
-
-		for {
-			select {
-			case <-ctx.Done():
-				<-done
-				return
-			case event, ok := <-events:
-				if !ok {
-					<-done
-					return
-				}
-				if err := writeSSEEvent(w, "time", event); err != nil {
-					cancel()
-					<-done
-					return
-				}
-				flusher.Flush()
-			}
-		}
+		handler := shared.SSEHandler("time", func(ctx context.Context, events chan<- timeSSEEvent) {
+			streamTimeEvents(ctx, events, clientID, interval, now)
+		})
+		handler.ServeHTTP(w, r.WithContext(ctx))
 	}
 }
 
 // streamTimeEvents 在独立协程中定时生成当前时间事件，直到 context 超时或客户端断开连接。
-func streamTimeEvents(ctx context.Context, events chan<- timeSSEEvent, done chan<- struct{}, clientID string, interval time.Duration, now func() time.Time) {
-	defer close(done)
-	defer close(events)
-
+func streamTimeEvents(ctx context.Context, events chan<- timeSSEEvent, clientID string, interval time.Duration, now func() time.Time) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
@@ -99,15 +67,4 @@ func streamTimeEvents(ctx context.Context, events chan<- timeSSEEvent, done chan
 			}
 		}
 	}
-}
-
-// writeSSEEvent 按 SSE 格式写出事件名和 JSON 数据。
-func writeSSEEvent(w http.ResponseWriter, eventName string, payload any) error {
-	data, err := json.Marshal(payload)
-	if err != nil {
-		return err
-	}
-
-	_, err = fmt.Fprintf(w, "event: %s\ndata: %s\n\n", eventName, data)
-	return err
 }
