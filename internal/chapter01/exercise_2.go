@@ -1,9 +1,6 @@
 package chapter01
 
-import (
-	"fmt"
-	"log/slog"
-)
+import "log/slog"
 
 /*
 *
@@ -37,8 +34,8 @@ func Exercise2() {
 	readSession("xxx")
 	prompt, err := buildPrompt()
 	if err != nil {
-		fmt.Errorf(err.Error())
-
+		slog.Error("build prompt failed", "err", err)
+		return
 	}
 	slog.Info("xxx")
 	callModel(prompt)
