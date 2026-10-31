@@ -3,6 +3,18 @@ package main
 import "fmt"
 
 func main() {
+	// nums[0] = 0
+	// nums[1] = -2
+	// nums[2] = -2 + 0
+	// nums[3] = -2 + 0 + 3
+	// nums[4] = -2 + 0 + 3 -5
+	// nums[5] = -2 + 0 + 3 -5 + 2
+	// nums[6] = -2 + 0 + 3 -5 + 2 -1
+	// left 2 ~ right 5  = 3 - 5 + 2 -1
+	// num[6] - num[2]
+	// [-2 + 0 + 3 -5 + 2 -1] - [-2 + 0]
+	// right 的前序和  - [left-1] 的前序和
+	// 0 ~ right 的前序和 = num[right-1]
 	na := Constructor([]int{-2, 0, 3, -5, 2, -1})
 	fmt.Println(na.SumRange(0, 2))
 	fmt.Println(na.SumRange(2, 5))
