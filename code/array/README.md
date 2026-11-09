@@ -10,7 +10,7 @@ go run ./code/array/001-two-sum
 
 - `001-two-sum`
 - `014-longest-common-prefix`
-- `027-remove-element`
+- `27-remove-element`
 - `066-plus-one`
 - `121-best-time-to-buy-and-sell-stock`
 - `122-best-time-to-buy-and-sell-stock-ii`
