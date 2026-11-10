@@ -9,7 +9,7 @@ go run ./code/array/001-two-sum
 当前题目目录：
 
 - `001-two-sum`
-- `014-longest-common-prefix`
+- `14-longest-common-prefix`
 - `27-remove-element`
 - `066-plus-one`
 - `121-best-time-to-buy-and-sell-stock`
