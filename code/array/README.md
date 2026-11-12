@@ -11,7 +11,7 @@ go run ./code/array/001-two-sum
 - `001-two-sum`
 - `14-longest-common-prefix`
 - `27-remove-element`
-- `066-plus-one`
+- `66-plus-one`
 - `121-best-time-to-buy-and-sell-stock`
 - `122-best-time-to-buy-and-sell-stock-ii`
 - `303-range-sum-query-immutable`
