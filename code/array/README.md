@@ -3,12 +3,12 @@
 每道题单独放在一个目录中，每个目录都是独立的 `package main`，可以单独运行：
 
 ```bash
-go run ./code/array/001-two-sum
+go run ./code/array/1-two-sum
 ```
 
 当前题目目录：
 
-- `001-two-sum`
+- `1-two-sum`
 - `14-longest-common-prefix`
 - `27-remove-element`
 - `66-plus-one`
